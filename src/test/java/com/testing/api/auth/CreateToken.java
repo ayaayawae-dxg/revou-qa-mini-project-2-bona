@@ -47,9 +47,39 @@ public class CreateToken {
     given()
       .body(requestString)
       .when()
-      .post()
+        .post()
       .then()
-      .statusCode(200)
-      .body("reason", equalTo("Bad credentials"));
+        .statusCode(200)
+        .body("reason", equalTo("Bad credentials"));
+  }
+
+  @Test
+  public void createTokenWithMissingUsername() {
+    JSONObject requestParams = new JSONObject();
+    requestParams.put("password", "user1");
+    String requestString = requestParams.toJSONString();
+
+    given()
+      .body(requestString)
+      .when()
+        .post()
+      .then()
+        .statusCode(200)
+        .body("reason", equalTo("Bad credentials"));
+  }
+
+  @Test
+  public void createTokenWithMissingPassword() {
+    JSONObject requestParams = new JSONObject();
+    requestParams.put("username", "user");
+    String requestString = requestParams.toJSONString();
+
+    given()
+      .body(requestString)
+      .when()
+        .post()
+      .then()
+        .statusCode(200)
+        .body("reason", equalTo("Bad credentials"));
   }
 }
