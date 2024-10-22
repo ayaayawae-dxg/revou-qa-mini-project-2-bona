@@ -1,85 +1,74 @@
 package com.testing.api.auth;
 
+import io.cucumber.datatable.DataTable;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.response.Response;
 import org.json.simple.JSONObject;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+
+import java.util.Map;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 public class CreateToken {
-  private static final String AUTH_ENDPOINT = "/auth";
+  private Response response;
+  private JSONObject requestParams;
 
-  @BeforeAll
-  public static void setup() {
-    RestAssured.baseURI = "https://restful-booker.herokuapp.com" + AUTH_ENDPOINT;
+  @Before
+  public void setup() {
+    requestParams = new JSONObject();
+  }
+
+  @Given("the authentication endpoint is {string}")
+  public void setAuthEndpoint(String endpoint) {
+    RestAssured.baseURI = endpoint;
+  }
+
+  @Given("the request content type is {string}")
+  public void setRequestContentType(String contentType) {
     RestAssured.requestSpecification = new RequestSpecBuilder()
-      .setContentType("application/json")
-      .setAccept("application/json")
+      .setContentType(contentType)
       .build();
   }
 
-  @Test
-  public void createTokenWithValidCredentials() {
-    JSONObject requestParams = new JSONObject();
-    requestParams.put("username", "admin");
-    requestParams.put("password", "password123");
-    String requestString = requestParams.toJSONString();
-
-    given()
-      .body(requestString)
-      .when()
-        .post()
-      .then()
-        .statusCode(200)
-        .body("token", notNullValue());
+  @Given("the response content type is {string}")
+  public void setResponseContentType(String contentType) {
+    RestAssured.requestSpecification = new RequestSpecBuilder()
+      .setAccept(contentType)
+      .build();
   }
 
-  @Test
-  public void createTokenWithInvalidCredentials() {
-    JSONObject requestParams = new JSONObject();
-    requestParams.put("username", "user");
-    requestParams.put("password", "user1");
+  @When("I send a POST request with the following credentials:")
+  public void createTokenWithCredentials(DataTable dataTable) {
+    Map<String, String> credentials = dataTable.asMap(String.class, String.class);
+
+    credentials.forEach((key, value) -> requestParams.put(key, value));
+
     String requestString = requestParams.toJSONString();
 
-    given()
+    response = given()
       .body(requestString)
       .when()
-        .post()
-      .then()
-        .statusCode(200)
-        .body("reason", equalTo("Bad credentials"));
+      .post();
   }
 
-  @Test
-  public void createTokenWithMissingUsername() {
-    JSONObject requestParams = new JSONObject();
-    requestParams.put("password", "user1");
-    String requestString = requestParams.toJSONString();
-
-    given()
-      .body(requestString)
-      .when()
-        .post()
-      .then()
-        .statusCode(200)
-        .body("reason", equalTo("Bad credentials"));
+  @Then("the response status code should be {int}")
+  public void verifyResponseStatusCode(int expectedStatusCode) {
+    response.then().statusCode(expectedStatusCode);
   }
 
-  @Test
-  public void createTokenWithMissingPassword() {
-    JSONObject requestParams = new JSONObject();
-    requestParams.put("username", "user");
-    String requestString = requestParams.toJSONString();
+  @Then("the response should contain a valid token")
+  public void verifyValidToken() {
+    response.then().body("token", notNullValue());
+  }
 
-    given()
-      .body(requestString)
-      .when()
-        .post()
-      .then()
-        .statusCode(200)
-        .body("reason", equalTo("Bad credentials"));
+  @Then("the response should contain reason {string}")
+  public void verifyErrorReason(String expectedReason) {
+    response.then().body("reason", equalTo(expectedReason));
   }
 }
