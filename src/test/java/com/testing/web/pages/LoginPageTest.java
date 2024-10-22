@@ -1,52 +1,68 @@
 package com.testing.web.pages;
 
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import io.cucumber.java.en.Then;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 import org.testng.Assert;
 
-import java.time.Duration;
-
 public class LoginPageTest {
-  static WebDriver driver;
-  static LoginPage loginPage;
+  private WebDriver driver;
+  private LoginPage loginPage;
 
-  @BeforeClass
-  public static void setup() {
+  @Before
+  public void setup() {
     System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/driver/chromedriver.exe");
-
     driver = new ChromeDriver();
     loginPage = new LoginPage(driver);
   }
 
-  @Test
-  public void loginWithValidCredentials() {
-    String expectedHomeUrl = "https://www.saucedemo.com/inventory.html";
-    driver.get("https://www.saucedemo.com");
-
-    loginPage.setUsername("standard_user");
-    loginPage.setPassword("secret_sauce");
-    loginPage.clickLogin();
-
-    Assert.assertEquals(driver.getCurrentUrl(), expectedHomeUrl, "Login success but not navigated to inventory page");
+  @Given("User on the Sauce Demo login page {string}")
+  public void navigateToLoginPage(String url) {
+    driver.get(url);
   }
 
-  @Test
-  public void loginWithInvalidCredentials() {
-    String expectedErrorMessage = "Username and password do not match any user in this service";
-    driver.get("https://www.saucedemo.com");
-
-    loginPage.setUsername("user1");
-    loginPage.setPassword("password");
-    loginPage.clickLogin();
-
-    Assert.assertEquals(loginPage.getErrorMessage(), expectedErrorMessage, "Login failed but error message not correct");
+  @Given("the Chrome browser is configured")
+  public void configureBrowser() {
+    Assert.assertNotNull(driver, "Browser should be configured");
   }
 
-  @AfterClass
-  public static void tearDown() {
-    driver.quit();
+  @When("User enter username {string}")
+  public void enterUsername(String username) {
+    loginPage.setUsername(username);
+  }
+
+  @When("User enter password {string}")
+  public void enterPassword(String password) {
+    loginPage.setPassword(password);
+  }
+
+  @When("User click the login button")
+  public void clickLoginButton() {
+    loginPage.clickLogin();
+  }
+
+  @Then("User should be redirected to the inventory page {string}")
+  public void verifyRedirectToInventoryPage(String expectedUrl) {
+    Assert.assertEquals(driver.getCurrentUrl(), expectedUrl, "Login success but not navigated to inventory page");
+  }
+
+  @Then("User should see an error message {string}")
+  public void verifyErrorMessage(String expectedErrorMessage) {
+    Assert.assertEquals(
+      loginPage.getErrorMessage(),
+      expectedErrorMessage,
+      "Login failed but error message not correct"
+    );
+  }
+
+  @After
+  public void tearDown() {
+    if (driver != null) {
+      driver.quit();
+    }
   }
 }
