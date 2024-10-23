@@ -11,7 +11,7 @@ import org.testng.Assert;
 
 public class LoginPageTest {
   private WebDriver driver;
-  private LoginPage loginPage;
+  private LoginPage loginPage; 
 
   @Before
   public void setup() {
