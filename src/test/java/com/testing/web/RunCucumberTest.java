@@ -1,14 +1,22 @@
 package com.testing.web;
 
-import io.cucumber.junit.Cucumber;
-import io.cucumber.junit.CucumberOptions;
-import org.junit.runner.RunWith;
+import io.cucumber.testng.AbstractTestNGCucumberTests;
+import io.cucumber.testng.CucumberOptions;
+import org.testng.annotations.DataProvider;
 
-@RunWith(Cucumber.class)
 @CucumberOptions(
   features = "src/test/resources/features/web",
   glue = "com.testing.web",
-  plugin = {"pretty", "html:target/cucumber-web-reports.html"}
+  plugin = {
+    "pretty",
+    "html:target/cucumber-reports/web/cucumber.html",
+    "json:target/cucumber-reports/web/cucumber.json"
+  }
 )
-public class RunCucumberTest {
+public class RunCucumberTest extends AbstractTestNGCucumberTests {
+  @Override
+  @DataProvider(parallel = true)
+  public Object[][] scenarios() {
+    return super.scenarios();
+  }
 }
