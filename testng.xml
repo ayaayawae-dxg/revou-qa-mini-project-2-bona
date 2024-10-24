@@ -11,4 +11,9 @@
             <class name="com.testing.web.RunCucumberTest"/>
         </classes>
     </test>
+    <test name="Mobile Tests">
+        <classes>
+            <class name="com.testing.mobile.RunCucumberTest"/>
+        </classes>
+    </test>
 </suite>
