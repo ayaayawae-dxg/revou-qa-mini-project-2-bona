@@ -38,6 +38,9 @@ services:
     volumes:
       - /dev/bus/usb:/dev/bus/usb
       - ~/.android:/root/.android
+    environment:
+      - CONNECT_TO_GRID=true
+      - SELENIUM_HOST=selenium_hub
 
 networks:
   selenium-grid:
