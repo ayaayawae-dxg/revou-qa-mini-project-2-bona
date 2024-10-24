@@ -5,28 +5,31 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class LoginPageTest {
-  private WebDriver driver;
+  private RemoteWebDriver driver;
   private LoginPage loginPage;
 
   @Before
-  public void setup() {
-    WebDriverManager.chromedriver().setup();
-
+  public void setup() throws MalformedURLException {
     ChromeOptions options = new ChromeOptions();
     options.addArguments("--headless");
     options.addArguments("--no-sandbox");
     options.addArguments("--disable-dev-shm-usage");
-    options.addArguments("--remote-debugging-port=9222");
     options.addArguments("--window-size=1920,1080");
+    options.addArguments("--remote-allow-origins=*");
 
-    driver = new ChromeDriver();
+    driver = new RemoteWebDriver(
+      new URL("http://selenium-hub:4444/wd/hub"),
+      options
+    );
+
     loginPage = new LoginPage(driver);
   }
 
