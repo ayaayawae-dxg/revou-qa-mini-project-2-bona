@@ -15,6 +15,7 @@ import java.net.URL;
 public class LoginPageTest {
   private RemoteWebDriver driver;
   private LoginPage loginPage;
+  String gridUrl = System.getProperty("selenium.grid.url", "http://localhost:4444/wd/hub");
 
   @Before
   public void setup() throws MalformedURLException {
@@ -26,7 +27,7 @@ public class LoginPageTest {
     options.addArguments("--remote-allow-origins=*");
 
     driver = new RemoteWebDriver(
-      new URL("http://selenium-hub:4444/wd/hub"),
+      new URL(gridUrl),
       options
     );
 
