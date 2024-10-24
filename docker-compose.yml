@@ -28,6 +28,17 @@ services:
     networks:
       - selenium-grid
 
+  appium-android-device:
+    image: appium/appium
+    depends_on:
+      - selenium-hub
+    privileged: true
+    networks:
+      - selenium-grid
+    volumes:
+      - /dev/bus/usb:/dev/bus/usb
+      - ~/.android:/root/.android
+
 networks:
   selenium-grid:
     driver: bridge

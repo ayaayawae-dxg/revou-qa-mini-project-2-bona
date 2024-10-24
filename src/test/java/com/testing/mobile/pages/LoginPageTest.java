@@ -16,6 +16,7 @@ import java.net.URL;
 public class LoginPageTest {
   private static AndroidDriver driver;
   private static LoginPage loginPage;
+  static String gridUrl = System.getProperty("appium.url", "http://localhost:4723");
 
   @Before
   public static void setup() throws MalformedURLException {
@@ -27,14 +28,16 @@ public class LoginPageTest {
     capabilities.setCapability("appium:appPackage", "com.saucelabs.mydemoapp.rn");
     capabilities.setCapability("appium:appActivity", "com.saucelabs.mydemoapp.rn.MainActivity");
 
-    driver = new AndroidDriver(new URL("http://localhost:4723"), capabilities);
+    driver = new AndroidDriver(new URL(gridUrl), capabilities);
     loginPage = new LoginPage(driver);
   }
 
   @Given("User on the login page")
-  public void userOnTheLoginPage() {
+  public void userOnTheLoginPage() throws InterruptedException {
     driver.findElement(By.xpath("//android.view.ViewGroup[@content-desc=\"open menu\"]/android.widget.ImageView")).click();
+    Thread.sleep(100);
     driver.findElement(By.xpath("//android.view.ViewGroup[@content-desc=\"menu item log in\"]")).click();
+    Thread.sleep(100);
   }
 
   @When("User enter username {string}")
