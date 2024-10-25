@@ -7,15 +7,20 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 
 public class LoginPageTest {
   private static AndroidDriver driver;
   private static LoginPage loginPage;
+  private static WebDriverWait wait;
   static String gridUrl = System.getProperty("appium.url", "http://localhost:4723");
 
   @Before
@@ -29,15 +34,19 @@ public class LoginPageTest {
     capabilities.setCapability("appium:appActivity", "com.saucelabs.mydemoapp.rn.MainActivity");
 
     driver = new AndroidDriver(new URL(gridUrl), capabilities);
+    wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     loginPage = new LoginPage(driver);
   }
 
   @Given("User on the login page")
   public void userOnTheLoginPage() throws InterruptedException {
-    driver.findElement(By.xpath("//android.view.ViewGroup[@content-desc=\"open menu\"]/android.widget.ImageView")).click();
-    Thread.sleep(100);
-    driver.findElement(By.xpath("//android.view.ViewGroup[@content-desc=\"menu item log in\"]")).click();
-    Thread.sleep(100);
+    WebElement menuButton = wait.until(ExpectedConditions.elementToBeClickable(
+      By.xpath("//android.view.ViewGroup[@content-desc=\"open menu\"]/android.widget.ImageView")));
+    menuButton.click();
+
+    WebElement loginMenuItem = wait.until(ExpectedConditions.elementToBeClickable(
+      By.xpath("//android.view.ViewGroup[@content-desc=\"menu item log in\"]")));
+    loginMenuItem.click();
   }
 
   @When("User enter username {string}")
@@ -58,8 +67,9 @@ public class LoginPageTest {
 
   @Then("User should be redirected to the product page")
   public void verifyRedirectToInventoryPage() {
-    String productPage = driver.findElement(By.xpath("//android.widget.TextView[@text=\"Products\"]")).getText();
-    Assert.assertEquals(productPage, "Products", "Login success but not navigated to inventory page");
+    WebElement productPage = wait.until(ExpectedConditions.visibilityOfElementLocated(
+      By.xpath("//android.widget.TextView[@text=\"Products\"]")));
+    Assert.assertEquals(productPage.getText(), "Products", "Login successful but not navigated to inventory page");
   }
 
   @Then("User should see an error message {string}")

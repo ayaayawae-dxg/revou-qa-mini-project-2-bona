@@ -2,12 +2,19 @@ package com.testing.mobile.pages;
 
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class LoginPage {
   AndroidDriver driver;
+  WebDriverWait wait;
 
   public LoginPage(AndroidDriver driver) {
     this.driver = driver;
+    this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
   }
 
   By username = By.xpath("//android.widget.EditText[@content-desc=\"Username input field\"]");
@@ -18,26 +25,32 @@ public class LoginPage {
   By errorMessage = By.xpath("//android.view.ViewGroup[@content-desc=\"generic-error-message\"]//android.widget.TextView");
 
   public void setUsername(String strUsername) {
-    driver.findElement(username).sendKeys(strUsername);
+    WebElement usernameField = wait.until(ExpectedConditions.visibilityOfElementLocated(username));
+    usernameField.sendKeys(strUsername);
   }
 
   public void setPassword(String strPassword) {
-    driver.findElement(password).sendKeys(strPassword);
+    WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(password));
+    passwordField.sendKeys(strPassword);
   }
 
   public void clickLogin() {
-    driver.findElement(loginButton).click();
+    WebElement loginBtn = wait.until(ExpectedConditions.elementToBeClickable(loginButton));
+    loginBtn.click();
   }
 
   public String getUsernameErrorMessage() {
-    return driver.findElement(usernameErrorMessage).getText();
+    WebElement usernameError = wait.until(ExpectedConditions.visibilityOfElementLocated(usernameErrorMessage));
+    return usernameError.getText();
   }
 
   public String getPasswordErrorMessage() {
-    return driver.findElement(passwordErrorMessage).getText();
+    WebElement passwordError = wait.until(ExpectedConditions.visibilityOfElementLocated(passwordErrorMessage));
+    return passwordError.getText();
   }
 
   public String getErrorMessage() {
-    return driver.findElement(errorMessage).getText();
+    WebElement errorText = wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessage));
+    return errorText.getText();
   }
 }
