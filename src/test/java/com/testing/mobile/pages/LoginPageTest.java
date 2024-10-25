@@ -62,8 +62,15 @@ public class LoginPageTest {
     Assert.assertEquals(productPage, "Products", "Login success but not navigated to inventory page");
   }
 
+  @Then("User should see an error message {string}")
+  public void seeAnErrorMessage(String errorMessage) {
+    Assert.assertEquals(loginPage.getErrorMessage(), errorMessage, "Login failed, credentials not valid");
+  }
+
   @After
   public static void teardown() {
-    driver.quit();
+    if (driver != null) {
+      driver.quit();
+    }
   }
 }

@@ -9,8 +9,8 @@ Feature: Login Page Functionality
     And User click the login button
     Then User should be redirected to the product page
 
-#  Scenario: Failed login with invalid credentials
-#    When User enter username "user1"
-#    And User enter password "password"
-#    And User click the login button
-#    Then User should see an error message "Username and password do not match any user in this service"
+  Scenario: Failed login with invalid credentials
+    When User enter username "user1"
+    And User enter password "password"
+    And User click the login button
+    Then User should see an error message "Provided credentials do not match any user in this service."

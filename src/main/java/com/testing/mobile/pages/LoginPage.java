@@ -15,7 +15,7 @@ public class LoginPage {
   By loginButton = By.xpath("//android.view.ViewGroup[@content-desc=\"Login button\"]");
   By usernameErrorMessage = By.xpath("//android.view.ViewGroup[@content-desc=\"Username-error-message\"]");
   By passwordErrorMessage = By.xpath("//android.view.ViewGroup[@content-desc=\"Password-error-message\"]");
-  By errorMessage = By.xpath("//android.view.ViewGroup[@content-desc=\"generic-error-message\"]");
+  By errorMessage = By.xpath("//android.view.ViewGroup[@content-desc=\"generic-error-message\"]//android.widget.TextView");
 
   public void setUsername(String strUsername) {
     driver.findElement(username).sendKeys(strUsername);
