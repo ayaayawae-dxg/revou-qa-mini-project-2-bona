@@ -49,7 +49,7 @@ public class GetBooking {
   @Then("I should receive a booking detail")
   public void iShouldReceiveABookingDetail() {
     response.then()
-      .statusCode(200)
+      .statusCode(201)
       .body(matchesJsonSchemaInClasspath("schemas/api/bookingSchema.json"));
   }
 
