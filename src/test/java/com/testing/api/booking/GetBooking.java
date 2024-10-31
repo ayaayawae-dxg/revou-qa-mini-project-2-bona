@@ -25,7 +25,7 @@ public class GetBooking {
 
   @Given("The booking endpoint is {string}")
   public void theBookingEndpointIs(String endpoint) {
-    spec = new RequestSpecBuilder().setBaseUri(endpoint).build();
+    spec = new RequestSpecBuilder().setContentType("application/json").setBaseUri(endpoint).build();
     request = given().spec(spec);
   }
 

@@ -28,7 +28,7 @@ public class GetBookingId {
 
   @Given("The booking ID endpoint is {string}")
   public void theBookingIDEndpointIs(String endpoint) {
-    spec = new RequestSpecBuilder().setBaseUri(endpoint).build();
+    spec = new RequestSpecBuilder().setContentType("application/json").setBaseUri(endpoint).build();
     request = given().spec(spec);
   }
 
