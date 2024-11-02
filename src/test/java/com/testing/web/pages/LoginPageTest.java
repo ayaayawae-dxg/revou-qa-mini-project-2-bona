@@ -1,7 +1,7 @@
 package com.testing.web.pages;
 
-import com.testing.web.BaseSteps;
 import com.testing.web.TestContext;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -25,32 +25,50 @@ public class LoginPageTest {
     driver.get(url);
   }
 
+  @Given("User see a login error message")
+  public void userSeeALoginErrorMessage() {
+    loginPage.setUsername("wrongUsername");
+    loginPage.setPassword("wrongPassword");
+    loginPage.clickLogin();
+    Assert.assertTrue(loginPage.getErrorMessage().length() > 0, "Login error message should be shown");
+  }
+
   @When("User enter username {string}")
-  public void enterUsername(String username) {
+  public void userEnterUsernameUsername(String username) {
     loginPage.setUsername(username);
   }
 
-  @When("User enter password {string}")
-  public void enterPassword(String password) {
+  @And("User enter password {string}")
+  public void userEnterPasswordPassword(String password) {
     loginPage.setPassword(password);
   }
 
   @When("User click the login button")
-  public void clickLoginButton() {
+  public void userClickTheLoginButton() {
     loginPage.clickLogin();
   }
 
+  @When("User click the close error message button")
+  public void userClickTheCloseErrorMessageButton() {
+    loginPage.clickCloseErrorMessage();
+  }
+
   @Then("User should be redirected to the inventory page {string}")
-  public void verifyRedirectToInventoryPage(String expectedUrl) {
+  public void userShouldBeRedirectedToTheInventoryPage(String expectedUrl) {
     Assert.assertEquals(driver.getCurrentUrl(), expectedUrl, "Login success but not navigated to inventory page");
   }
 
   @Then("User should see a login error message {string}")
-  public void verifyErrorMessage(String expectedErrorMessage) {
+  public void userShouldSeeALoginErrorMessage(String expectedErrorMessage) {
     Assert.assertEquals(
       loginPage.getErrorMessage(),
       expectedErrorMessage,
       "Login failed but error message not correct"
     );
+  }
+  
+  @Then("User should not see a login error message")
+  public void userShouldNotSeeALoginErrorMessage() {
+    Assert.assertTrue(loginPage.errorMessageIsNotShown(), "Login error message should not be shown");
   }
 }
