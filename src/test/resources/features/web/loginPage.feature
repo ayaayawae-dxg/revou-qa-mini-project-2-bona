@@ -14,4 +14,4 @@ Feature: Login Page Functionality
     When User enter username "user1"
     And User enter password "password"
     And User click the login button
-    Then User should see an error message "Username and password do not match any user in this service"
+    Then User should see a login error message "Username and password do not match any user in this service"
