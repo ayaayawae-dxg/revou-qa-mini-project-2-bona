@@ -53,4 +53,10 @@ public class LoginPage {
     WebElement errorButtonCloseElement = wait.until(ExpectedConditions.elementToBeClickable(errorButtonClose));
     errorButtonCloseElement.click();
   }
+
+  public void login(String username, String password) {
+    setUsername(username);
+    setPassword(password);
+    clickLogin();
+  }
 }

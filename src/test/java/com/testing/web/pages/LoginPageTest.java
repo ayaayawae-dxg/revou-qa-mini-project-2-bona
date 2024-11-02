@@ -8,19 +8,16 @@ import io.cucumber.java.en.Then;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 
-import java.net.MalformedURLException;
-
 public class LoginPageTest {
   private final LoginPage loginPage;
   private final RemoteWebDriver driver;
 
-  public LoginPageTest() throws MalformedURLException {
-    new TestContext();
+  public LoginPageTest() {
     this.driver = TestContext.getDriver();
     this.loginPage = new LoginPage(driver);
   }
 
-  @Given("User on the Sauce Demo login page {string}")
+  @And("User on the Sauce Demo login page {string}")
   public void navigateToLoginPage(String url) {
     driver.get(url);
   }
@@ -31,6 +28,15 @@ public class LoginPageTest {
     loginPage.setPassword("wrongPassword");
     loginPage.clickLogin();
     Assert.assertTrue(loginPage.getErrorMessage().length() > 0, "Login error message should be shown");
+  }
+
+  @Given("User is logged in")
+  public void userIsLoggedIn() {
+    driver.get("https://www.saucedemo.com/");
+      
+    loginPage.setUsername("standard_user");
+    loginPage.setPassword("secret_sauce");
+    loginPage.clickLogin();
   }
 
   @When("User enter username {string}")
