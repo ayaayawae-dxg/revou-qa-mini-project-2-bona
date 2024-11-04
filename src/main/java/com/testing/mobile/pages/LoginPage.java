@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class LoginPage {
   AndroidDriver driver;
@@ -20,8 +21,8 @@ public class LoginPage {
   By username = By.xpath("//android.widget.EditText[@content-desc=\"Username input field\"]");
   By password = By.xpath("//android.widget.EditText[@content-desc=\"Password input field\"]");
   By loginButton = By.xpath("//android.view.ViewGroup[@content-desc=\"Login button\"]");
-  By usernameErrorMessage = By.xpath("//android.view.ViewGroup[@content-desc=\"Username-error-message\"]");
-  By passwordErrorMessage = By.xpath("//android.view.ViewGroup[@content-desc=\"Password-error-message\"]");
+  By usernameErrorMessageContainer = By.xpath("//android.view.ViewGroup[@content-desc=\"Username-error-message\"]");
+  By passwordErrorMessageContainer = By.xpath("//android.view.ViewGroup[@content-desc=\"Password-error-message\"]");
   By errorMessage = By.xpath("//android.view.ViewGroup[@content-desc=\"generic-error-message\"]//android.widget.TextView");
 
   public void setUsername(String strUsername) {
@@ -40,13 +41,15 @@ public class LoginPage {
   }
 
   public String getUsernameErrorMessage() {
-    WebElement usernameError = wait.until(ExpectedConditions.visibilityOfElementLocated(usernameErrorMessage));
-    return usernameError.getText();
+    WebElement container = driver.findElement(usernameErrorMessageContainer);
+    List<WebElement> errorText = container.findElements(By.xpath(".//android.widget.TextView"));
+    return errorText.isEmpty() ? "" : errorText.get(0).getText();
   }
 
   public String getPasswordErrorMessage() {
-    WebElement passwordError = wait.until(ExpectedConditions.visibilityOfElementLocated(passwordErrorMessage));
-    return passwordError.getText();
+    WebElement container = driver.findElement(passwordErrorMessageContainer);
+    List<WebElement> errorText = container.findElements(By.xpath(".//android.widget.TextView"));
+    return errorText.isEmpty() ? "" : errorText.get(0).getText();
   }
 
   public String getErrorMessage() {
