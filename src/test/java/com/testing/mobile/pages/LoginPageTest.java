@@ -2,8 +2,7 @@ package com.testing.mobile.pages;
 
 import com.testing.mobile.TestContext;
 import io.appium.java_client.android.AndroidDriver;
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -61,5 +60,19 @@ public class LoginPageTest {
   @Then("User should see an error message {string}")
   public void seeAnErrorMessage(String errorMessage) {
     Assert.assertEquals(loginPage.getErrorMessage(), errorMessage, "Login failed, credentials not valid");
+  }
+
+  @Then("User should see username error message {string}")
+  public void userShouldSeeUsernameErrorMessage(String errorMessage) {
+    String actualError = loginPage.getUsernameErrorMessage();
+    Assert.assertFalse(actualError.isEmpty(), "No error message is displayed when it should show: " + errorMessage);
+    Assert.assertEquals(actualError, errorMessage, "Error message doesn't match expected text");
+  }
+
+  @And("User should see password error message {string}")
+  public void userShouldSeePasswordErrorMessage(String errorMessage) {
+    String actualError = loginPage.getPasswordErrorMessage();
+    Assert.assertFalse(actualError.isEmpty(), "No error message is displayed when it should show: " + errorMessage);
+    Assert.assertEquals(actualError, errorMessage, "Error message doesn't match expected text");
   }
 }
