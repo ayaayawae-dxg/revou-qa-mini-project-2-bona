@@ -16,11 +16,13 @@ public class LoginPageTest {
   private final LoginPage loginPage;
   private final AndroidDriver driver;
   private final WebDriverWait wait;
+  private final ProductsPage productsPage;
 
   public LoginPageTest() {
     this.driver = TestContext.getDriver();
     this.wait = TestContext.getWait();
     this.loginPage = new LoginPage(driver);
+    this.productsPage = new ProductsPage(driver);
   }
 
   @Given("User on the login page")
@@ -52,9 +54,7 @@ public class LoginPageTest {
 
   @Then("User should be redirected to the product page")
   public void verifyRedirectToInventoryPage() {
-    WebElement productPage = wait.until(ExpectedConditions.visibilityOfElementLocated(
-      By.xpath("//android.widget.TextView[@text=\"Products\"]")));
-    Assert.assertEquals(productPage.getText(), "Products", "Login successful but not navigated to inventory page");
+    Assert.assertEquals(productsPage.getTitle(), "Products", "Login successful but not navigated to inventory page");
   }
 
   @Then("User should see an error message {string}")
