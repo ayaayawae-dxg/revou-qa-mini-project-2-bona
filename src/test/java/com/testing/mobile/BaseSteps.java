@@ -1,21 +1,20 @@
-package com.testing.web;
+package com.testing.mobile;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import io.cucumber.java.en.Given;
 import org.testng.Assert;
 
 import java.net.MalformedURLException;
 
 public class BaseSteps {
   @Before
-  public void configureBrowser() throws MalformedURLException {
+  public void configureMobile() throws MalformedURLException {
     new TestContext();
     Assert.assertNotNull(TestContext.getDriver(), "Browser should be configured");
   }
 
   @After
-  public void tearDown() {
+  public void teardown() {
     TestContext.quitDriver();
   }
 }

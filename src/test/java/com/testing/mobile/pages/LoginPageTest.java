@@ -1,5 +1,6 @@
 package com.testing.mobile.pages;
 
+import com.testing.mobile.TestContext;
 import io.appium.java_client.android.AndroidDriver;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -8,34 +9,19 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.Duration;
-
 public class LoginPageTest {
-  private static AndroidDriver driver;
-  private static LoginPage loginPage;
-  private static WebDriverWait wait;
-  static String gridUrl = System.getProperty("appium.url", "http://localhost:4723");
+  private final LoginPage loginPage;
+  private final AndroidDriver driver;
+  private final WebDriverWait wait;
 
-  @Before
-  public static void setup() throws MalformedURLException {
-    DesiredCapabilities capabilities = new DesiredCapabilities();
-    capabilities.setCapability("appium:deviceName", "emulator-5554");
-    capabilities.setCapability("appium:platformVersion", "15");
-    capabilities.setCapability("platformName", "android");
-    capabilities.setCapability("appium:automationName", "UiAutomator2");
-    capabilities.setCapability("appium:appPackage", "com.saucelabs.mydemoapp.rn");
-    capabilities.setCapability("appium:appActivity", "com.saucelabs.mydemoapp.rn.MainActivity");
-
-    driver = new AndroidDriver(new URL(gridUrl), capabilities);
-    wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-    loginPage = new LoginPage(driver);
+  public LoginPageTest() {
+    this.driver = TestContext.getDriver();
+    this.wait = TestContext.getWait();
+    this.loginPage = new LoginPage(driver);
   }
 
   @Given("User on the login page")
@@ -75,12 +61,5 @@ public class LoginPageTest {
   @Then("User should see an error message {string}")
   public void seeAnErrorMessage(String errorMessage) {
     Assert.assertEquals(loginPage.getErrorMessage(), errorMessage, "Login failed, credentials not valid");
-  }
-
-  @After
-  public static void teardown() {
-    if (driver != null) {
-      driver.quit();
-    }
   }
 }

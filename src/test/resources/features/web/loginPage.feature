@@ -1,8 +1,7 @@
 Feature: Login Page Functionality
 
  Background:
-   Given the Chrome browser is configured
-   And User on the Sauce Demo login page "https://www.saucedemo.com"
+   Given User on the Sauce Demo login page "https://www.saucedemo.com"
 
  Scenario Outline: Successful login with valid credentials
    When User enter username "<username>"

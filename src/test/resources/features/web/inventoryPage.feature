@@ -1,8 +1,7 @@
 Feature: Inventory Page Functionality
 
   Background:
-    Given the Chrome browser is configured
-    And User is logged in
+    Given User is logged in
     And User on the Sauce Demo inventory page "https://www.saucedemo.com/inventory.html"
 
   Scenario: Open the sidebar
