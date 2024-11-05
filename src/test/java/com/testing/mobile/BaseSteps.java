@@ -10,7 +10,7 @@ public class BaseSteps {
   @Before
   public void configureMobile() throws MalformedURLException {
     new TestContext();
-    Assert.assertNotNull(TestContext.getDriver(), "Browser should be configured");
+    Assert.assertNotNull(TestContext.getDriver(), "Mobile should be configured");
   }
 
   @After

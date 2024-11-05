@@ -8,7 +8,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.List;
 
 public class ProductsPage {
   AndroidDriver driver;
@@ -33,10 +32,23 @@ public class ProductsPage {
 
   public void clickProduct(String productName) {
     String xpathExpression = String.format(
-        "//android.widget.TextView[@content-desc='store item text' and @text='%s']/parent::android.view.ViewGroup",
-        productName
+      "//android.widget.TextView[@content-desc='store item text' and @text='%s']/parent::android.view.ViewGroup",
+      productName
     );
     WebElement productItem = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpathExpression)));
     productItem.click();
+  }
+
+  public void scrollToProduct(String productName) {
+    String uiAutomator = String.format(
+      "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(new UiSelector().text(\"%s\"))",
+      productName
+    );
+
+    driver.findElement(AppiumBy.androidUIAutomator(uiAutomator));
+
+    wait.until(ExpectedConditions.elementToBeClickable(
+      AppiumBy.xpath("//android.widget.TextView[@content-desc='store item text' and @text='" + productName + "']/parent::android.view.ViewGroup")
+    ));
   }
 }
