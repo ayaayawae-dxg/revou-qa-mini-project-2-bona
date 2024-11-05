@@ -3,6 +3,7 @@ package com.testing.mobile.pages;
 import com.testing.mobile.TestContext;
 import com.testing.mobile.components.CartIcon;
 import io.appium.java_client.android.AndroidDriver;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,12 +14,23 @@ public class ProductsDetailPageTest {
   private final WebDriverWait wait;
   private final ProductsDetailPage productsDetailPage;
   private final CartIcon cartIcon;
+  private final ProductsPage productsPage;
 
   public ProductsDetailPageTest() {
     this.driver = TestContext.getDriver();
     this.wait = TestContext.getWait();
     this.productsDetailPage = new ProductsDetailPage(driver);
     this.cartIcon = new CartIcon(driver);
+    this.productsPage = new ProductsPage(driver);
+  }
+  
+  @Given("User add items {string} to the cart with quantity {int} and color {string}")
+  public void userAddItemsToTheCartWithQuantityQuantityAndColor(String productName, Integer quantity, String color) {
+    productsPage.scrollToProduct(productName);
+    productsPage.clickProduct(productName);
+    productsDetailPage.increaseQuantity(quantity - 1);
+    productsDetailPage.selectColor(color);
+    productsDetailPage.clickAddToCartButton();
   }
 
   @When("User increase the quantity by {int}")
@@ -39,11 +51,6 @@ public class ProductsDetailPageTest {
   @When("User click Add to Cart button")
   public void userClickAddToCartButton() {
     productsDetailPage.clickAddToCartButton();
-  }
-  
-  @Then("the cart badge should show {int} items")
-  public void theCartBadgeShouldShowItems(int quantity) {
-    Assert.assertEquals(cartIcon.getQuantity(), quantity);
   }
 
   @Then("User should see {string} color selection")

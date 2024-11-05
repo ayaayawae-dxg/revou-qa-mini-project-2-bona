@@ -19,6 +19,7 @@ public class CartIcon {
     this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
   }
 
+  By iconContainer = AppiumBy.accessibilityId("cart badge");
   String iconContainerXPath = "//android.view.ViewGroup[@content-desc=\"cart badge\"]";
 
   public int getQuantity() {
@@ -41,5 +42,10 @@ public class CartIcon {
     } catch (Exception e) {
       return 0;
     }
+  }
+
+  public void clickCartButton() {
+    WebElement cartButton = wait.until(ExpectedConditions.elementToBeClickable(iconContainer));
+    cartButton.click();
   }
 }
