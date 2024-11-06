@@ -44,4 +44,19 @@ public class InventoryPageTest {
   public void theAddToCartButtonForShouldChangeToRemove(String itemName) {
     Assert.assertTrue(inventoryPage.isRemoveFromCartItemShown(itemName), "Add to cart button should be changed to remove");
   }
+
+  @When("User clicks the remove button for {string}")
+  public void userClicksTheRemoveButtonFor(String itemName) {
+    inventoryPage.removeItemFromCart(itemName);
+  }
+
+  @Then("the remove button for {string} should change to add to cart")
+  public void theRemoveButtonForShouldChangeToAddToCart(String itemName) {
+    Assert.assertTrue(inventoryPage.isAddToCartItemShown(itemName), "Remove button should be changed to add to cart");
+  }
+
+  @When("User clicks the title of {string} item")
+  public void userClicksTheTitleOfItem(String itemName) {
+    inventoryPage.clickTitleOfItem(itemName);
+  }
 }
