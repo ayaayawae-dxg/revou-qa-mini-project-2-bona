@@ -46,45 +46,31 @@ public class CheckoutShippingPage {
   public void fillShippingInformation(Map<String, String> shippingInformation) {
     WebElement fullNameInput = wait.until(ExpectedConditions.elementToBeClickable(fullName));
     String fullNameValue = shippingInformation.get("full_name");
-    if (fullNameValue != null && !fullNameValue.equals("[empty]")) {
-        fullNameInput.sendKeys(fullNameValue);
-    }
+    if (fullNameValue != null) fullNameInput.sendKeys(fullNameValue);
 
     WebElement addressLine1Input = wait.until(ExpectedConditions.elementToBeClickable(addressLine1));
     String addressLine1Value = shippingInformation.get("address_line_1");
-    if (addressLine1Value != null && !addressLine1Value.equals("[empty]")) {
-        addressLine1Input.sendKeys(addressLine1Value);
-    }
+    if (addressLine1Value != null) addressLine1Input.sendKeys(addressLine1Value);
 
     WebElement addressLine2Input = wait.until(ExpectedConditions.elementToBeClickable(addressLine2));
     String addressLine2Value = shippingInformation.get("address_line_2");
-    if (addressLine2Value != null && !addressLine2Value.equals("[empty]")) {
-        addressLine2Input.sendKeys(addressLine2Value);
-    }
+    if (addressLine2Value != null) addressLine2Input.sendKeys(addressLine2Value);
 
     WebElement cityInput = wait.until(ExpectedConditions.elementToBeClickable(city));
     String cityValue = shippingInformation.get("city");
-    if (cityValue != null && !cityValue.equals("[empty]")) {
-        cityInput.sendKeys(cityValue);
-    }
+    if (cityValue != null) cityInput.sendKeys(cityValue);
 
     WebElement stateInput = wait.until(ExpectedConditions.elementToBeClickable(stateRegion));
     String stateValue = shippingInformation.get("state_region");
-    if (stateValue != null && !stateValue.equals("[empty]")) {
-        stateInput.sendKeys(stateValue);
-    }
+    if (stateValue != null) stateInput.sendKeys(stateValue);
 
     WebElement zipCodeInput = wait.until(ExpectedConditions.elementToBeClickable(zipCode));
     String zipCodeValue = shippingInformation.get("zip_code");
-    if (zipCodeValue != null && !zipCodeValue.equals("[empty]")) {
-        zipCodeInput.sendKeys(zipCodeValue);
-    }
+    if (zipCodeValue != null) zipCodeInput.sendKeys(zipCodeValue);
 
     WebElement countryInput = wait.until(ExpectedConditions.elementToBeClickable(country));
     String countryValue = shippingInformation.get("country");
-    if (countryValue != null && !countryValue.equals("[empty]")) {
-        countryInput.sendKeys(countryValue);
-    }
+    if (countryValue != null) countryInput.sendKeys(countryValue);
   }
 
   public void clickToPaymentButton() {
