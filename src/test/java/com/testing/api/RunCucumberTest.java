@@ -11,8 +11,7 @@ import org.testng.annotations.DataProvider;
     "pretty",
     "html:target/cucumber-reports/api/cucumber.html",
     "json:target/cucumber-reports/api/cucumber.json"
-  },
-  tags = "@api"
+  }
 )
 public class RunCucumberTest extends AbstractTestNGCucumberTests {
   @Override
