@@ -19,11 +19,21 @@ Feature: Checkout Page Functionality
     And User click on the to payment button
     Then User should see checkout payment page
 
-  Scenario: Fill shipping address fields with incomplete information
-    When User click on the to payment button
-    Then User should see error message for fields:
-      | full_name      |
-      | address_line_1 |
-      | city           |
-      | zip_code       |
-      | country        |
+  Scenario Outline: Fill shipping address fields with various combinations
+    When User fill shipping address with this information:
+      | full_name      | <full_name>      |
+      | address_line_1 | <address_line_1> |
+      | address_line_2 | <address_line_2> |
+      | city           | <city>           |
+      | state_region   | <state_region>   |
+      | zip_code       | <zip_code>       |
+      | country        | <country>        |
+      And User click on the to payment button
+    Then User should see error message for fields "<error_fields>"
+
+    Examples:
+      | full_name | address_line_1 | address_line_2 | city    | state_region | zip_code | country   | error_fields                                   |
+      |           |                |                |         |              |          |           | full_name,address_line_1,city,zip_code,country |
+      | John Doe  |                | address 2      |         |              |          |           | address_line_1,city,zip_code,country           |
+      | John Doe  | address 1      |                | Jakarta |              |          |           | zip_code,country                               |
+      |           | address 1      |                | Jakarta | DKI Jakarta  | 10110    | Indonesia | full_name                                      |

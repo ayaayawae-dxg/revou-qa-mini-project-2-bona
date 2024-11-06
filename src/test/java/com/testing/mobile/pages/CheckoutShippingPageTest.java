@@ -11,6 +11,7 @@ import io.cucumber.datatable.DataTable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Arrays;
 
 public class CheckoutShippingPageTest {
   private final AndroidDriver driver;
@@ -40,13 +41,14 @@ public class CheckoutShippingPageTest {
     checkoutShippingPage.clickToPaymentButton();
   }
 
-  @Then("User should see error message for fields:")
-  public void userShouldSeeErrorMessageForFields(DataTable dataTable) {
-    List<String> errorFields = dataTable.asList(String.class);
+  @Then("User should see error message for fields {string}")
+  public void userShouldSeeErrorMessageForFields(String errorFieldsString) {
+    String[] errorFields = errorFieldsString.split(",");
 
-    System.out.println("errorFields" + errorFields);
     for (String field : errorFields) {
-      Assert.assertTrue(checkoutShippingPage.errorMessageIsDisplayed(field), "Error message for field " + field + " is not displayed");
+      String trimmedField = field.trim();
+      Assert.assertTrue(checkoutShippingPage.errorMessageIsDisplayed(trimmedField), 
+          "Error message for field " + trimmedField + " is not displayed");
     }
   }
 }
