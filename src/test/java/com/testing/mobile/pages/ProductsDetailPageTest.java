@@ -3,6 +3,7 @@ package com.testing.mobile.pages;
 import com.testing.mobile.TestContext;
 import com.testing.mobile.components.CartIcon;
 import io.appium.java_client.android.AndroidDriver;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class CartPage {
   AndroidDriver driver;
@@ -22,6 +23,9 @@ public class CartPage {
   By productName = AppiumBy.xpath("(//android.widget.TextView[@content-desc='product label'])[1]");
   By quantity = AppiumBy.xpath("((//android.view.ViewGroup[@content-desc='counter amount'])[1]/android.widget.TextView)");
   By removeButton = AppiumBy.xpath("(//android.view.ViewGroup[@content-desc='remove item'])[1]");
+  By summaryTotalQuantity = AppiumBy.accessibilityId("total number");
+  By summaryTotalPrice = AppiumBy.accessibilityId("total price");
+  By checkoutButton = AppiumBy.accessibilityId("Proceed To Checkout button");
   String colorXPath = "(//android.view.ViewGroup[@content-desc='%s'])[1]";
 
   public String getProductName() {
@@ -53,5 +57,46 @@ public class CartPage {
     } catch (TimeoutException e) {
       return false;
     }
+  }
+
+  public Integer getSummaryTotalQuantity() {
+    WebElement totalQuantity = wait.until(ExpectedConditions.visibilityOfElementLocated(this.summaryTotalQuantity));
+    return Integer.parseInt(totalQuantity.getText().split(" ")[0]);
+  }
+
+  public Float getSummaryTotalPrice() {
+    WebElement totalPrice = wait.until(ExpectedConditions.visibilityOfElementLocated(this.summaryTotalPrice));
+    return Float.parseFloat(totalPrice.getText().replace("$", ""));
+  }
+
+  public Integer getItemsTotalQuantity() {
+    By allQuantities = AppiumBy.xpath("//android.view.ViewGroup[@content-desc='counter amount']/android.widget.TextView");
+    List<WebElement> quantities = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(allQuantities));
+    
+    return quantities.stream()
+        .mapToInt(element -> Integer.parseInt(element.getText()))
+        .sum();
+  }
+
+  public Float getItemsTotalPrice() {
+    By allPrices = AppiumBy.xpath("//android.widget.TextView[@content-desc='product price']");
+    By allQuantities = AppiumBy.xpath("//android.view.ViewGroup[@content-desc='counter amount']/android.widget.TextView");
+    
+    List<WebElement> prices = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(allPrices));
+    List<WebElement> quantities = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(allQuantities));
+    
+    float total = 0;
+    for (int i = 0; i < prices.size(); i++) {
+        float price = Float.parseFloat(prices.get(i).getText().replace("$", ""));
+        int quantity = Integer.parseInt(quantities.get(i).getText());
+        total += price * quantity;
+    }
+    
+    return total;
+  }
+
+  public void clickCheckoutButton() {
+    WebElement checkoutButton = wait.until(ExpectedConditions.elementToBeClickable(this.checkoutButton));
+    checkoutButton.click();
   }
 }

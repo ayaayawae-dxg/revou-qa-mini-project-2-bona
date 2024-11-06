@@ -1,5 +1,6 @@
 package com.testing.mobile.pages;
 
+import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -18,6 +19,7 @@ public class LoginPage {
     this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
   }
 
+  By loginTitle = AppiumBy.xpath("(//android.widget.TextView[@text=\"Login\"])[1]");
   By username = By.xpath("//android.widget.EditText[@content-desc=\"Username input field\"]");
   By password = By.xpath("//android.widget.EditText[@content-desc=\"Password input field\"]");
   By loginButton = By.xpath("//android.view.ViewGroup[@content-desc=\"Login button\"]");
@@ -55,5 +57,10 @@ public class LoginPage {
   public String getErrorMessage() {
     WebElement errorText = wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessage));
     return errorText.getText();
+  }
+
+  public String getLoginTitle() {
+    WebElement loginTitleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(loginTitle));
+    return loginTitleElement.getText();
   }
 }

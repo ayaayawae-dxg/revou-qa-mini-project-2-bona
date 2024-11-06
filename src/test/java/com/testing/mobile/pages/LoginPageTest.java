@@ -1,6 +1,7 @@
 package com.testing.mobile.pages;
 
 import com.testing.mobile.TestContext;
+import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -27,13 +28,19 @@ public class LoginPageTest {
 
   @Given("User on the login page")
   public void userOnTheLoginPage() throws InterruptedException {
-    WebElement menuButton = wait.until(ExpectedConditions.elementToBeClickable(
-      By.xpath("//android.view.ViewGroup[@content-desc=\"open menu\"]/android.widget.ImageView")));
+    WebElement menuButton = wait.until(ExpectedConditions.elementToBeClickable(AppiumBy.accessibilityId("open menu")));
     menuButton.click();
 
-    WebElement loginMenuItem = wait.until(ExpectedConditions.elementToBeClickable(
-      By.xpath("//android.view.ViewGroup[@content-desc=\"menu item log in\"]")));
+    WebElement loginMenuItem = wait.until(ExpectedConditions.elementToBeClickable(AppiumBy.accessibilityId("menu item log in")));
     loginMenuItem.click();
+  }
+
+  @Given("User login with username {string} and password {string}")
+  public void userLoginWithUsernameAndPassword(String username, String password) throws InterruptedException {
+    userOnTheLoginPage();
+    enterUsername(username);
+    enterPassword(password);
+    clickLoginButton();
   }
 
   @When("User enter username {string}")
@@ -74,5 +81,10 @@ public class LoginPageTest {
     String actualError = loginPage.getPasswordErrorMessage();
     Assert.assertFalse(actualError.isEmpty(), "No error message is displayed when it should show: " + errorMessage);
     Assert.assertEquals(actualError, errorMessage, "Error message doesn't match expected text");
+  }
+
+  @Then("User should see the login page")
+  public void userShouldSeeTheLoginPage() {
+    Assert.assertEquals(loginPage.getLoginTitle(), "Login", "Login page not shown");
   }
 }
