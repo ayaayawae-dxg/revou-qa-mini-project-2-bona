@@ -20,7 +20,7 @@ public class CartPage {
 
   By menuButton = By.id("react-burger-menu-btn");
   By cartButton = By.cssSelector("[data-test='shopping-cart-link']");
-
+  By checkoutButton = By.id("checkout");
   String removeButtonItem = "remove-sauce-labs-%s";
 
   public Boolean isItemInCart(String itemName) {
@@ -33,5 +33,10 @@ public class CartPage {
     } catch (TimeoutException e) {
       return false;
     }
+  }
+
+  public void clickCheckoutButton() {
+    WebElement checkoutButtonElement = wait.until(ExpectedConditions.elementToBeClickable(checkoutButton));
+    checkoutButtonElement.click();
   }
 }

@@ -71,4 +71,8 @@ public class InventoryPage {
 
     itemLink.click();
   }
+
+  public Boolean isInventoryPage() {
+    return driver.getCurrentUrl().equals("https://www.saucedemo.com/inventory.html");
+  } 
 }

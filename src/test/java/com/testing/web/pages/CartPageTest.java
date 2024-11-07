@@ -15,6 +15,11 @@ public class CartPageTest {
     this.cartPage = new CartPage(driver);
   }
 
+  @When("User click on the checkout button")
+  public void userClickOnTheCheckoutButton() {
+    cartPage.clickCheckoutButton();
+  }
+
   @Then("User will be redirected to the cart page")
   public void userWillBeRedirectedToTheCartPage() {
     Assert.assertTrue(driver.getCurrentUrl().startsWith("https://www.saucedemo.com/cart.html"), "User should be redirected to the cart page");

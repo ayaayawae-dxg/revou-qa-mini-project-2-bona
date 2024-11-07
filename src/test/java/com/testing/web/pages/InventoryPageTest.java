@@ -59,4 +59,9 @@ public class InventoryPageTest {
   public void userClicksTheTitleOfItem(String itemName) {
     inventoryPage.clickTitleOfItem(itemName);
   }
+
+  @Then("User should be redirected to the inventory page")
+  public void userShouldBeRedirectedToTheInventoryPage() {
+    Assert.assertTrue(inventoryPage.isInventoryPage(), "User should be redirected to the inventory page");
+  }
 }
