@@ -21,4 +21,34 @@ public class InventoryDetailPageTest {
     Assert.assertTrue(driver.getCurrentUrl().startsWith("https://www.saucedemo.com/inventory-item.html"), "User should be redirected to the detail page");
     Assert.assertTrue(inventoryDetailPage.isImageNameDisplayed(itemName), "Image should be displayed");
   }
+
+  @When("User clicks the add to cart button")
+  public void userClicksTheAddToCartButton() {
+    inventoryDetailPage.clickAddToCartButton();
+  }
+
+  @Then("the add to cart button should change to remove")
+  public void theAddToCartButtonShouldChangeToRemove() {
+    Assert.assertTrue(inventoryDetailPage.isRemoveFromCartButtonShown(), "Add to cart button should be changed to remove");
+  }
+
+  @When("User clicks the remove button")
+  public void userClicksTheRemoveButton() {
+    inventoryDetailPage.clickRemoveFromCartButton();
+  }
+
+  @Then("the remove button should change to add to cart")
+  public void theRemoveButtonShouldChangeToAddToCart() {
+    Assert.assertTrue(inventoryDetailPage.isAddToCartButtonShown(), "Remove button should be changed to add to cart");
+  }
+
+  @When("User clicks the back to products button")
+  public void userClicksTheBackToProductsButton() {
+    inventoryDetailPage.clickBackToProductsButton();
+  }
+
+  @Then("User will be redirected to the inventory page")
+  public void userWillBeRedirectedToTheInventoryPage() {
+    Assert.assertTrue(driver.getCurrentUrl().startsWith("https://www.saucedemo.com/inventory.html"), "User should be redirected to the inventory page");
+  }
 }
